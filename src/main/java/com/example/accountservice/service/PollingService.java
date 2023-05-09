@@ -26,31 +26,30 @@ public class PollingService {
     StatisticRepo statisticRepo;
 
     //@Scheduled(fixedDelay = 5000)
-    @Scheduled(cron = "0 45 11 * * ?")
+    @Scheduled(cron = "0 53 15 * * ?")
     public void producer(){
         List<MessageDTO> messageDTOS = messageRepo.findByStatus(false);
 
         for (MessageDTO messageDTO: messageDTOS) {
             kafkaTemplate.send("notification", messageDTO);
-//            if (kafkaTemplate.send("notification", messageDTO).isDone()) {
-//                logger.info("SUCCESS");
-//                messageDTO.setStatus(true);
-//                messageRepo.save(messageDTO);
-//            } else {
-//                logger.error("FAIL SEND MESSAGE DATA");
-//            }
+            messageDTO.setStatus(true);
+            messageRepo.save(messageDTO);
         }
 
         List<StatisticDTO> statisticDTOS = statisticRepo.findByStatus(false);
         for (StatisticDTO statisticDTO: statisticDTOS) {
             kafkaTemplate.send("statistic", statisticDTO);
-//            if (kafkaTemplate.send("notification", statisticDTO).isDone()) {
-//                logger.info("SUCCESS");
-//                statisticDTO.setStatus(true);
-//                statisticRepo.save(statisticDTO);
-//            } else {
-//                logger.error("FAIL SEND STATISTIC DATA");
-//            }
+            statisticDTO.setStatus(true);
+            statisticRepo.save(statisticDTO);
         }
+    }
+    @Scheduled(cron = "0 55 15 * * ?")
+    public void delete() {
+        List<MessageDTO> messageDTOS = messageRepo.findByStatus(true);
+        messageRepo.deleteAllInBatch(messageDTOS);
+
+        List<StatisticDTO> statisticDTOS = statisticRepo.findByStatus(true);
+        statisticRepo.deleteAllInBatch(statisticDTOS);
+
     }
 }
