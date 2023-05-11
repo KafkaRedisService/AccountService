@@ -26,7 +26,7 @@ public class PollingService {
     StatisticRepo statisticRepo;
 
     //@Scheduled(fixedDelay = 5000)
-    @Scheduled(cron = "0 53 15 * * ?")
+    @Scheduled(cron = "0 50 9 * * ?")
     public void producer(){
         List<MessageDTO> messageDTOS = messageRepo.findByStatus(false);
 
@@ -43,7 +43,7 @@ public class PollingService {
             statisticRepo.save(statisticDTO);
         }
     }
-    @Scheduled(cron = "0 55 15 * * ?")
+    @Scheduled(cron = "0 55 9 * * ?")
     public void delete() {
         List<MessageDTO> messageDTOS = messageRepo.findByStatus(true);
         messageRepo.deleteAllInBatch(messageDTOS);
