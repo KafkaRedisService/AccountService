@@ -1,9 +1,7 @@
 package com.example.accountservice.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -16,6 +14,7 @@ public class AccountDTO {
 	private String email;
 	private String fileName;
 	private String pathFile;
+	@CreationTimestamp
 	private Date timeCreate;
 
 	public String getPathFile() {
