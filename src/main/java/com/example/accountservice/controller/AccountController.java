@@ -312,8 +312,14 @@ public class AccountController {
 		Optional optionalFileName = accountRepo.findByPathFile(fileName, vo.getEmail());
 		//accountRepo.deleteFile(fileName, email);
 
-		// File or Directory to be deleted
-		Path path = Paths.get(optionalFileName.get().toString());
+		Path path = Paths.get("");
+		if(optionalFileName.isPresent()) {
+			// File or Directory to be deleted
+			path = Paths.get(optionalFileName.get().toString());
+		}else {
+			return "Not Found";
+		}
+
 
 		try {
 			// Delete file or directory
