@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -82,6 +83,11 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         return "User registered successfully!.";
+    }
+
+    @Override
+    public String refreshtoken(Map<String, Object> claims, String subject) {
+        return jwtTokenProvider.doGenerateRefreshToken(claims,subject);
     }
 
 
